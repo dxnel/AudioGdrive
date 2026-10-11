@@ -1,0 +1,2457 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+app/
+  assets/
+    css/
+      main.css
+  components/
+    BrandMark.vue
+    CoverArt.vue
+    LibraryView.vue
+    PlayerBar.vue
+    PrivacyNote.vue
+    ShareDialog.vue
+    WaveArt.vue
+  composables/
+    useAudioPlayer.js
+  pages/
+    s/
+      [token].vue
+    index.vue
+  utils/
+    cover.js
+  app.vue
+public/
+  favicon.svg
+  robots.txt
+server/
+  api/
+    auth/
+      connect.post.ts
+    drive/
+      folders.get.ts
+    items/
+      [id].delete.ts
+      [id].patch.ts
+    libraries/
+      [id]/
+        items.get.ts
+        scan.post.ts
+      [id].delete.ts
+    shared/
+      [token].get.ts
+    shares/
+      [token].delete.ts
+    connection.get.ts
+    libraries.get.ts
+    libraries.post.ts
+    shares.get.ts
+    shares.post.ts
+    stream.get.ts
+  utils/
+    access.ts
+    crypto.ts
+    google.ts
+    scan.ts
+supabase/
+  schema.sql
+.env.example
+.gitignore
+nuxt.config.ts
+package.json
+SETUP.md
+tailwind.config.ts
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="app/assets/css/main.css">
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #0e0f12;
+  color: #edeef0;
+}
+
+body {
+  font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+:focus-visible {
+  outline: 2px solid #8b8cff;
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(139, 140, 255, 0.35);
+}
+
+/* Barre de progression / curseur de lecture */
+input[type='range'].scrub {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  width: 100%;
+  height: 24px;
+  cursor: pointer;
+  margin: 0;
+  --p: 0%;
+}
+.scrub::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #edeef0 var(--p), rgba(255, 255, 255, 0.16) var(--p));
+}
+.scrub::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+.scrub::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: #edeef0;
+}
+.scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.scrub::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.scrub:hover::-webkit-slider-thumb,
+.scrub:focus-visible::-webkit-slider-thumb,
+.scrub.scrub-lg::-webkit-slider-thumb {
+  opacity: 1;
+}
+.scrub:hover::-moz-range-thumb,
+.scrub:focus-visible::-moz-range-thumb,
+.scrub.scrub-lg::-moz-range-thumb {
+  opacity: 1;
+}
+.scrub:focus-visible {
+  outline-offset: 0;
+}
+
+/* Égaliseur de la piste en lecture */
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+.eq-bar {
+  transform-origin: 50% 100%;
+  animation: eq 0.9s ease-in-out infinite;
+}
+.eq-bar:nth-child(2) { animation-delay: -0.3s; animation-duration: 0.7s; }
+.eq-bar:nth-child(3) { animation-delay: -0.6s; animation-duration: 1.1s; }
+
+/* Seul moment animé « décoratif » : la forme d'onde de l'écran de connexion */
+@keyframes bar-rise {
+  from { transform: scaleY(0.12); opacity: 0; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+.bar-rise {
+  transform-origin: 50% 100%;
+  animation: bar-rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</file>
+
+<file path="app/components/BrandMark.vue">
+<template>
+  <span class="inline-flex items-center gap-2.5">
+    <svg :width="size" :height="size" viewBox="0 0 32 32" aria-hidden="true" class="flex-shrink-0">
+      <rect width="32" height="32" rx="9" fill="#8B8CFF" />
+      <g fill="#0E0F12">
+        <rect x="6" y="11" width="3.4" height="10" rx="1.7" />
+        <rect x="11.6" y="7" width="3.4" height="18" rx="1.7" />
+        <rect x="17.2" y="9.5" width="3.4" height="13" rx="1.7" />
+        <rect x="22.8" y="12.5" width="3.4" height="7" rx="1.7" />
+      </g>
+    </svg>
+    <span v-if="wordmark" class="text-[17px] font-semibold tracking-tight leading-none">AudioGdrive</span>
+  </span>
+</template>
+
+<script setup>
+defineProps({
+  size: { type: Number, default: 30 },
+  wordmark: { type: Boolean, default: true }
+})
+</script>
+</file>
+
+<file path="app/components/CoverArt.vue">
+<template>
+  <div class="relative flex-shrink-0 overflow-hidden" :class="rounded" :style="{ background: bg }" aria-hidden="true">
+    <!-- Les marges en % se calculent sur le conteneur parent : on les met sur un calque absolu
+         pour qu'elles suivent la taille de la pochette, pas celle de la page. -->
+    <div class="absolute inset-0 flex items-end justify-center gap-[7%] px-[17%] pb-[20%]">
+      <span
+        v-for="(h, i) in bars"
+        :key="i"
+        class="w-[12%] rounded-full"
+        :style="{ height: h + '%', background: fg }"
+      ></span>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// Pochette générée : la teinte et la forme d'onde viennent du nom, donc
+// chaque dossier / morceau garde toujours la même identité visuelle.
+const props = defineProps({
+  name: { type: String, default: '' },
+  rounded: { type: String, default: 'rounded-lg' }
+})
+
+const hash = computed(() => {
+  let h = 2166136261
+  for (const c of props.name) {
+    h ^= c.codePointAt(0)
+    h = Math.imul(h, 16777619)
+  }
+  return h >>> 0
+})
+const hue = computed(() => hash.value % 360)
+const bg = computed(() => `hsl(${hue.value} 30% 22%)`)
+const fg = computed(() => `hsl(${hue.value} 60% 74%)`)
+const bars = computed(() => [0, 1, 2, 3].map(i => 30 + ((hash.value >> (i * 5)) & 31) * 1.7))
+</script>
+</file>
+
+<file path="app/components/LibraryView.vue">
+<template>
+  <div class="md:grid md:grid-cols-[264px_minmax(0,1fr)] md:gap-10">
+    <!-- Dossiers : barre latérale (desktop) -->
+    <aside class="hidden md:block">
+      <nav class="sticky top-24 max-h-[calc(100dvh-14rem)] overflow-y-auto pr-1" aria-label="Dossiers">
+        <h2 class="px-3 pb-2 text-sm font-semibold text-mute">Dossiers</h2>
+        <ul>
+          <li
+            v-for="f in flatFolders"
+            :key="f.drive_id"
+            class="group relative"
+          >
+            <button
+              class="flex w-full items-center gap-3 rounded-xl py-2 pr-10 text-left transition-colors"
+              :class="selectedId === f.drive_id ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/5 hover:text-white'"
+              :style="{ paddingLeft: 12 + f.depth * 14 + 'px' }"
+              :aria-current="selectedId === f.drive_id ? 'true' : undefined"
+              @click="selectedId = f.drive_id"
+            >
+              <CoverArt :name="f.name" class="h-9 w-9" rounded="rounded-md" />
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-sm font-medium">{{ f.name }}</span>
+                <span class="block text-xs text-mute">{{ counts[f.drive_id] || 0 }} fichier{{ (counts[f.drive_id] || 0) > 1 ? 's' : '' }}</span>
+              </span>
+            </button>
+            <!-- Repère de partage -->
+            <span
+              v-if="isOwner && isCovered(f)"
+              class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-accent group-hover:opacity-0"
+              title="Partagé"
+            >
+              <Users :size="15" />
+            </span>
+            <button
+              v-if="isOwner"
+              class="absolute right-1.5 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-mute opacity-0 transition hover:bg-white/10 hover:text-white focus-visible:opacity-100 group-hover:opacity-100"
+              :aria-label="`Partager ${f.name}`"
+              @click="shareFolder = f"
+            >
+              <Share2 :size="15" />
+            </button>
+          </li>
+        </ul>
+        <p v-if="!flatFolders.length" class="px-3 py-4 text-sm text-mute">Aucun dossier avec de l'audio.</p>
+      </nav>
+    </aside>
+
+    <section class="min-w-0 pb-40">
+      <!-- Dossiers : pastilles (mobile) -->
+      <div v-if="flatFolders.length > 1" class="md:hidden -mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none" role="tablist" aria-label="Dossiers">
+        <button
+          v-for="f in flatFolders"
+          :key="f.drive_id"
+          role="tab"
+          :aria-selected="selectedId === f.drive_id"
+          class="flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors"
+          :class="selectedId === f.drive_id ? 'bg-white text-ink' : 'bg-raised text-white/75'"
+          @click="selectedId = f.drive_id"
+        >
+          {{ f.name }}
+          <span :class="selectedId === f.drive_id ? 'text-ink/55' : 'text-mute'" class="ml-1 text-xs">{{ counts[f.drive_id] || 0 }}</span>
+        </button>
+      </div>
+
+      <!-- En-tête du dossier -->
+      <header v-if="selected" class="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-7">
+        <CoverArt :name="selected.name" class="h-36 w-36 sm:h-44 sm:w-44 shadow-2xl shadow-black/50 self-center sm:self-auto" rounded="rounded-2xl" />
+        <div class="min-w-0 flex-1 text-center sm:text-left">
+          <h1 class="text-3xl font-bold leading-tight tracking-tight md:text-5xl line-clamp-2 break-words">{{ selected.name }}</h1>
+          <p class="mt-2 text-sm text-mute">
+            {{ selectedCount }} fichier{{ selectedCount > 1 ? 's' : '' }} audio
+            <template v-if="!isOwner"> · {{ canEdit ? 'tu peux écouter et renommer' : 'écoute seule' }}</template>
+          </p>
+
+          <div class="mt-5 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+            <button
+              class="flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:bg-white/90 active:scale-[0.98] disabled:opacity-40"
+              :disabled="!visibleFiles.length"
+              @click="playAll"
+            >
+              <Play :size="17" fill="currentColor" /> Tout écouter
+            </button>
+
+            <button
+              v-if="isOwner"
+              class="flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition active:scale-[0.98]"
+              :class="directShares.length ? 'bg-accent/15 text-accent hover:bg-accent/25' : 'bg-accent text-ink hover:bg-accent-strong'"
+              @click="shareFolder = selected"
+            >
+              <Users v-if="directShares.length" :size="17" />
+              <Share2 v-else :size="17" />
+              {{ directShares.length ? `Partagé · ${directShares.length} lien${directShares.length > 1 ? 's' : ''}` : 'Partager' }}
+            </button>
+          </div>
+
+          <p v-if="isOwner && !directShares.length && selectedCovered" class="mt-3 text-xs text-mute">
+            Ce dossier est déjà accessible via un dossier parent partagé.
+          </p>
+        </div>
+      </header>
+
+      <!-- Outils -->
+      <div class="mt-8 grid grid-cols-[1fr_auto] items-center gap-3 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
+        <div class="col-span-2 flex items-center rounded-full bg-raised px-4 focus-within:ring-1 focus-within:ring-accent sm:col-span-1">
+          <Search :size="17" stroke-width="1.75" class="mr-3 flex-shrink-0 text-mute" />
+          <input
+            v-model="searchQuery"
+            type="search"
+            placeholder="Rechercher dans ce dossier"
+            aria-label="Rechercher un fichier"
+            class="w-full bg-transparent py-3 text-sm text-white outline-none placeholder:text-mute"
+          />
+        </div>
+
+        <div class="relative">
+          <ListFilter :size="16" stroke-width="1.75" class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-mute" />
+          <select
+            v-model="sortBy"
+            aria-label="Trier"
+            class="w-full cursor-pointer appearance-none rounded-full bg-raised py-3 pl-10 pr-8 text-sm text-white outline-none focus:ring-1 focus:ring-accent"
+          >
+            <option value="date">Plus récents</option>
+            <option value="name">Alphabétique</option>
+          </select>
+          <ChevronDown :size="14" class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-mute" />
+        </div>
+
+        <button
+          role="switch"
+          :aria-checked="includeSub"
+          class="flex items-center gap-3 rounded-full bg-raised py-2.5 pl-4 pr-3 text-sm text-white/80"
+          @click="includeSub = !includeSub"
+        >
+          Sous-dossiers
+          <span class="relative h-6 w-10 rounded-full transition-colors" :class="includeSub ? 'bg-accent' : 'bg-white/15'">
+            <span class="absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all" :class="includeSub ? 'left-[18px]' : 'left-0.5'"></span>
+          </span>
+        </button>
+      </div>
+
+      <p v-if="player.error.value" class="mt-4 rounded-xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-300" role="alert">
+        {{ player.error.value }}
+      </p>
+
+      <!-- Liste des fichiers -->
+      <div v-if="visibleFiles.length" class="mt-4">
+        <div class="hidden md:grid grid-cols-[44px_1fr_130px_90px_44px] gap-3 border-b border-line px-3 pb-2 text-xs text-mute">
+          <span class="text-center">#</span>
+          <span>Titre</span>
+          <span>Ajouté le</span>
+          <span class="text-right">Taille</span>
+          <span></span>
+        </div>
+
+        <ul>
+          <li
+            v-for="(file, i) in visibleFiles"
+            :key="file.drive_id"
+            class="group relative grid cursor-pointer grid-cols-[44px_1fr_auto] items-center gap-3 rounded-xl px-1 py-1.5 transition-colors hover:bg-white/[0.06] md:grid-cols-[44px_1fr_130px_90px_44px] md:px-3"
+            :class="player.currentId.value === file.drive_id ? 'bg-white/[0.07]' : ''"
+            @click="play(file)"
+          >
+            <!-- Numéro / lecture / égaliseur -->
+            <button
+              class="grid h-11 w-11 place-items-center text-sm tabular-nums"
+              :class="player.currentId.value === file.drive_id ? 'text-accent' : 'text-mute'"
+              :aria-label="(player.currentId.value === file.drive_id && player.playing.value ? 'Pause ' : 'Lire ') + file.name"
+              @click.stop="play(file)"
+            >
+              <span v-if="player.currentId.value === file.drive_id && player.playing.value" class="flex h-4 items-end gap-[3px] group-hover:hidden" aria-hidden="true">
+                <span class="eq-bar block h-full w-[3px] rounded-full bg-accent"></span>
+                <span class="eq-bar block h-full w-[3px] rounded-full bg-accent"></span>
+                <span class="eq-bar block h-full w-[3px] rounded-full bg-accent"></span>
+              </span>
+              <span v-else class="group-hover:hidden">{{ i + 1 }}</span>
+              <span class="hidden group-hover:block text-white">
+                <Pause v-if="player.currentId.value === file.drive_id && player.playing.value" :size="18" fill="currentColor" />
+                <Play v-else :size="18" fill="currentColor" />
+              </span>
+            </button>
+
+            <!-- Titre -->
+            <div class="min-w-0">
+              <p class="truncate text-[15px] font-medium" :class="player.currentId.value === file.drive_id ? 'text-accent' : 'text-white'">
+                {{ file.name }}
+              </p>
+              <p class="truncate text-xs text-mute">
+                <span v-if="includeSub && file.parent_id !== selectedId">{{ folderName(file.parent_id) }}</span>
+                <span v-if="includeSub && file.parent_id !== selectedId && file.size"> – </span>
+                <span class="md:hidden">{{ formatSize(file.size) }}</span>
+              </p>
+            </div>
+
+            <span class="hidden text-sm text-mute md:block">{{ formatDate(file.created_time) }}</span>
+            <span class="hidden text-right text-sm tabular-nums text-mute md:block">{{ formatSize(file.size) }}</span>
+
+            <!-- Menu -->
+            <div class="relative flex justify-end">
+              <button
+                v-if="canEdit || isOwner"
+                class="grid h-11 w-11 place-items-center rounded-full text-mute transition hover:text-white md:h-9 md:w-9 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100"
+                :class="menuFor === file.drive_id ? 'md:!opacity-100 text-white' : ''"
+                aria-label="Plus d'actions"
+                aria-haspopup="menu"
+                :aria-expanded="menuFor === file.drive_id"
+                @click.stop="menuFor = menuFor === file.drive_id ? null : file.drive_id"
+              >
+                <Ellipsis :size="18" />
+              </button>
+              <div
+                v-if="menuFor === file.drive_id"
+                class="absolute right-0 top-full z-30 mt-1 w-56 overflow-hidden rounded-xl border border-line bg-raised py-1 shadow-2xl"
+                role="menu"
+                @click.stop
+              >
+                <button v-if="canEdit" role="menuitem" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-white/10" @click="menuFor = null; renameItem(file)">
+                  <Pencil :size="16" class="text-mute" /> Renommer
+                </button>
+                <button v-if="isOwner" role="menuitem" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-red-300 hover:bg-red-500/10" @click="menuFor = null; deleteItem(file)">
+                  <Trash2 :size="16" /> Mettre à la corbeille
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Vide -->
+      <div v-else class="mt-8 rounded-2xl border border-dashed border-line px-6 py-14 text-center">
+        <p class="font-medium">{{ searchQuery ? 'Aucun résultat' : 'Aucun fichier audio ici' }}</p>
+        <p class="mt-1 text-sm text-mute">
+          <template v-if="searchQuery">Essaie un autre mot ou efface la recherche.</template>
+          <template v-else-if="!includeSub && selectedCount === 0 && (counts[selectedId] || 0) > 0">Active « Sous-dossiers » pour voir les fichiers des dossiers qu'il contient.</template>
+          <template v-else>Ajoute des fichiers audio dans ce dossier sur Drive, puis réindexe la bibliothèque.</template>
+        </p>
+      </div>
+    </section>
+
+    <!-- Fermer le menu au clic à côté -->
+    <div v-if="menuFor" class="fixed inset-0 z-20" @click="menuFor = null"></div>
+
+    <ShareDialog v-if="shareFolder" :library-id="libraryId" :folder="shareFolder" @close="closeShare" />
+  </div>
+</template>
+
+<script setup>
+import { Play, Pause, Search, Pencil, Trash2, Share2, Users, ListFilter, ChevronDown, Ellipsis } from 'lucide-vue-next'
+
+const props = defineProps({
+  items: { type: Array, default: () => [] },
+  libraryId: { type: String, default: '' },
+  isOwner: { type: Boolean, default: false },
+  canEdit: { type: Boolean, default: false },
+  shareToken: { type: String, default: '' }
+})
+const emit = defineEmits(['changed'])
+
+const player = useAudioPlayer()
+
+const selectedId = ref(null)
+const searchQuery = ref('')
+const sortBy = ref('date')
+const includeSub = ref(false)
+const shareFolder = ref(null)
+const menuFor = ref(null)
+
+// --- Arborescence ---
+const folders = computed(() => props.items.filter(i => i.is_folder))
+const audio = computed(() => props.items.filter(i => !i.is_folder))
+const byId = computed(() => Object.fromEntries(folders.value.map(f => [f.drive_id, f])))
+
+const flatFolders = computed(() => {
+  const children = {}
+  const roots = []
+  for (const f of folders.value) {
+    if (f.parent_id && byId.value[f.parent_id]) (children[f.parent_id] ||= []).push(f)
+    else roots.push(f) // la racine de la bibliothèque, ou du dossier partagé
+  }
+  const out = []
+  const walk = (f, depth) => {
+    out.push({ ...f, depth })
+    ;(children[f.drive_id] || []).sort((a, b) => a.name.localeCompare(b.name)).forEach(c => walk(c, depth + 1))
+  }
+  roots.forEach(r => walk(r, 0))
+  return out
+})
+
+const counts = computed(() => {
+  const c = {}
+  for (const f of audio.value) for (const id of f.path_ids) c[id] = (c[id] || 0) + 1
+  return c
+})
+
+watch(flatFolders, (list) => {
+  if (!list.length) { selectedId.value = null; return }
+  if (!selectedId.value || !byId.value[selectedId.value]) selectedId.value = list[0].drive_id
+}, { immediate: true })
+
+const folderName = (id) => byId.value[id]?.name || ''
+const selected = computed(() => byId.value[selectedId.value] || null)
+
+// --- Fichiers affichés ---
+const visibleFiles = computed(() => {
+  if (!selectedId.value) return []
+  let r = audio.value.filter(f =>
+    includeSub.value ? (f.parent_id === selectedId.value || f.path_ids.includes(selectedId.value)) : f.parent_id === selectedId.value
+  )
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) r = r.filter(f => f.name.toLowerCase().includes(q))
+  return [...r].sort(sortBy.value === 'name'
+    ? (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })
+    : (a, b) => new Date(b.created_time) - new Date(a.created_time))
+})
+const selectedCount = computed(() => visibleFiles.value.length)
+
+// --- Partage : état des liens (propriétaire) ---
+const shares = ref([])
+const loadShares = async () => {
+  if (!props.isOwner || !props.libraryId) { shares.value = []; return }
+  try {
+    shares.value = (await $fetch('/api/shares', { query: { libraryId: props.libraryId } })).shares
+  } catch { shares.value = [] }
+}
+watch(() => props.libraryId, loadShares, { immediate: true })
+
+const sharedIds = computed(() => new Set(shares.value.map(s => s.folder_id)))
+const isCovered = (f) => sharedIds.value.has(f.drive_id) || f.path_ids.some(id => sharedIds.value.has(id))
+const directShares = computed(() => selected.value ? shares.value.filter(s => s.folder_id === selected.value.drive_id) : [])
+const selectedCovered = computed(() => selected.value ? isCovered(selected.value) : false)
+const closeShare = () => { shareFolder.value = null; loadShares() }
+
+// --- Lecture ---
+const trackOf = (f) => ({
+  id: f.drive_id,
+  title: f.name,
+  src: `/api/stream?id=${encodeURIComponent(f.drive_id)}${props.shareToken ? '&share=' + encodeURIComponent(props.shareToken) : ''}`
+})
+const play = (file) => player.toggle(trackOf(file), visibleFiles.value.map(trackOf))
+const playAll = () => { if (visibleFiles.value.length) play(visibleFiles.value[0]) }
+
+const formatSize = (b) => {
+  if (!b) return ''
+  return b > 1e6 ? (b / 1e6).toFixed(1) + ' Mo' : Math.round(b / 1e3) + ' Ko'
+}
+const formatDate = (d) => d ? new Date(d).toLocaleDateString('fr-CH', { day: 'numeric', month: 'short', year: 'numeric' }) : ''
+
+// --- Actions ---
+const query = computed(() => props.shareToken ? { share: props.shareToken } : {})
+const errMsg = (e) => e?.data?.message || e?.message || 'Erreur'
+
+const renameItem = async (file) => {
+  const name = prompt('Nouveau nom :', file.name)
+  if (!name || name.trim() === file.name) return
+  try {
+    await $fetch(`/api/items/${file.drive_id}`, { method: 'PATCH', body: { name }, query: query.value })
+    emit('changed')
+  } catch (e) { alert(errMsg(e)) }
+}
+const deleteItem = async (file) => {
+  if (!confirm(`Mettre « ${file.name} » à la corbeille Drive ?`)) return
+  try {
+    if (player.currentId.value === file.drive_id) player.stop()
+    await $fetch(`/api/items/${file.drive_id}`, { method: 'DELETE' })
+    emit('changed')
+  } catch (e) { alert(errMsg(e)) }
+}
+</script>
+</file>
+
+<file path="app/components/PlayerBar.vue">
+<template>
+  <div v-if="player.current.value">
+    <!-- Barre de lecture -->
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
+      <!-- Fil de progression (mobile) -->
+      <div class="md:hidden h-0.5 bg-white/10">
+        <div class="h-full bg-white" :style="{ width: pct + '%' }"></div>
+      </div>
+
+      <div class="mx-auto max-w-[1400px] px-3 md:px-6 py-2 md:py-3 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_minmax(320px,560px)_1fr] items-center gap-3 md:gap-6">
+        <!-- Titre -->
+        <button class="flex items-center gap-3 min-w-0 text-left md:cursor-default" @click="expanded = true" aria-label="Ouvrir le lecteur">
+          <CoverArt :name="title" class="h-11 w-11 md:h-12 md:w-12" rounded="rounded-md" />
+          <span class="min-w-0">
+            <span class="block truncate text-sm font-medium">{{ title }}</span>
+            <span class="block truncate text-xs text-mute">{{ player.playing.value ? 'En lecture' : 'En pause' }}</span>
+          </span>
+        </button>
+
+        <!-- Contrôles + progression (desktop) -->
+        <div class="hidden md:flex flex-col items-center gap-0.5">
+          <div class="flex items-center gap-5">
+            <button class="p-2 text-mute enabled:hover:text-white disabled:opacity-30 transition-colors" :disabled="!player.hasPrev.value" @click="player.prev()" aria-label="Précédent">
+              <SkipBack :size="20" fill="currentColor" />
+            </button>
+            <button class="h-10 w-10 grid place-items-center rounded-full bg-white text-ink hover:scale-105 transition-transform" @click="toggle" :aria-label="player.playing.value ? 'Pause' : 'Lecture'">
+              <Pause v-if="player.playing.value" :size="18" fill="currentColor" />
+              <Play v-else :size="18" fill="currentColor" class="ml-0.5" />
+            </button>
+            <button class="p-2 text-mute enabled:hover:text-white disabled:opacity-30 transition-colors" :disabled="!player.hasNext.value" @click="player.next()" aria-label="Suivant">
+              <SkipForward :size="20" fill="currentColor" />
+            </button>
+          </div>
+          <div class="flex w-full items-center gap-3">
+            <span class="w-10 text-right text-[11px] tabular-nums text-mute">{{ fmt(player.time.value) }}</span>
+            <input type="range" min="0" max="1000" step="1" class="scrub" :value="pct * 10" :style="{ '--p': pct + '%' }" @input="onScrub" aria-label="Position de lecture" />
+            <span class="w-10 text-[11px] tabular-nums text-mute">{{ fmt(player.duration.value) }}</span>
+          </div>
+        </div>
+
+        <!-- Droite : fermer (desktop) / lecture + suivant (mobile) -->
+        <div class="flex items-center justify-end gap-1">
+          <button class="md:hidden h-11 w-11 grid place-items-center rounded-full text-white" @click="toggle" :aria-label="player.playing.value ? 'Pause' : 'Lecture'">
+            <Pause v-if="player.playing.value" :size="24" fill="currentColor" />
+            <Play v-else :size="24" fill="currentColor" />
+          </button>
+          <button class="md:hidden h-11 w-11 grid place-items-center text-mute disabled:opacity-30" :disabled="!player.hasNext.value" @click="player.next()" aria-label="Suivant">
+            <SkipForward :size="22" fill="currentColor" />
+          </button>
+          <button class="hidden md:grid h-9 w-9 place-items-center rounded-full text-mute hover:bg-white/10 hover:text-white transition-colors" @click="player.stop()" aria-label="Fermer le lecteur">
+            <X :size="18" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lecteur plein écran (mobile) -->
+    <Transition
+      enter-active-class="transition-transform duration-300 ease-out motion-reduce:transition-none"
+      leave-active-class="transition-transform duration-250 ease-in motion-reduce:transition-none"
+      enter-from-class="translate-y-full"
+      leave-to-class="translate-y-full"
+    >
+      <div v-if="expanded" class="md:hidden fixed inset-0 z-50 flex flex-col bg-ink px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+        <div class="flex items-center justify-between">
+          <button class="h-11 w-11 -ml-2 grid place-items-center text-mute" @click="expanded = false" aria-label="Réduire le lecteur">
+            <ChevronDown :size="26" />
+          </button>
+          <BrandMark :size="22" :wordmark="false" />
+          <button class="h-11 w-11 -mr-2 grid place-items-center text-mute" @click="closeAll" aria-label="Arrêter la lecture">
+            <X :size="22" />
+          </button>
+        </div>
+
+        <div class="flex-1 grid place-items-center py-4">
+          <CoverArt :name="title" class="aspect-square w-[min(80vw,46dvh)]" rounded="rounded-2xl" />
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold leading-snug line-clamp-2">{{ title }}</h2>
+          <p v-if="player.error.value" class="mt-2 text-sm text-red-400">{{ player.error.value }}</p>
+
+          <div class="mt-5">
+            <input type="range" min="0" max="1000" step="1" class="scrub scrub-lg" :value="pct * 10" :style="{ '--p': pct + '%' }" @input="onScrub" aria-label="Position de lecture" />
+            <div class="mt-1 flex justify-between text-xs tabular-nums text-mute">
+              <span>{{ fmt(player.time.value) }}</span>
+              <span>{{ fmt(player.duration.value) }}</span>
+            </div>
+          </div>
+
+          <div class="mt-4 flex items-center justify-center gap-8">
+            <button class="h-14 w-14 grid place-items-center text-white disabled:opacity-30" :disabled="!player.hasPrev.value" @click="player.prev()" aria-label="Précédent">
+              <SkipBack :size="30" fill="currentColor" />
+            </button>
+            <button class="h-[72px] w-[72px] grid place-items-center rounded-full bg-white text-ink active:scale-95 transition-transform" @click="toggle" :aria-label="player.playing.value ? 'Pause' : 'Lecture'">
+              <Pause v-if="player.playing.value" :size="30" fill="currentColor" />
+              <Play v-else :size="30" fill="currentColor" class="ml-1" />
+            </button>
+            <button class="h-14 w-14 grid place-items-center text-white disabled:opacity-30" :disabled="!player.hasNext.value" @click="player.next()" aria-label="Suivant">
+              <SkipForward :size="30" fill="currentColor" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup>
+import { Play, Pause, SkipBack, SkipForward, X, ChevronDown } from 'lucide-vue-next'
+
+const player = useAudioPlayer()
+const expanded = ref(false)
+
+const title = computed(() => player.current.value?.title || '')
+const pct = computed(() => player.duration.value > 0 ? (player.time.value / player.duration.value) * 100 : 0)
+
+// Même logique que la liste : pause / reprise de la piste courante
+const toggle = () => {
+  const t = player.current.value
+  if (t) player.toggle(t)
+}
+const onScrub = (e) => player.seek(Number(e.target.value) / 1000)
+const closeAll = () => { expanded.value = false; player.stop() }
+
+const fmt = (s) => {
+  if (!s || isNaN(s) || !isFinite(s)) return '0:00'
+  return `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, '0')}`
+}
+
+// Quand il n'y a plus de piste, on referme le plein écran
+watch(() => player.currentId.value, (id) => { if (!id) expanded.value = false })
+</script>
+</file>
+
+<file path="app/components/PrivacyNote.vue">
+<template>
+  <div class="flex gap-3 rounded-2xl border border-accent/25 bg-accent/[0.07]" :class="compact ? 'p-3' : 'p-4 md:p-5'">
+    <ShieldCheck :size="compact ? 18 : 22" stroke-width="1.75" class="mt-0.5 flex-shrink-0 text-accent" />
+    <div class="min-w-0 text-sm leading-relaxed">
+      <p class="font-semibold text-white">Pas besoin de rendre tes fichiers publics</p>
+      <p class="mt-1 text-white/70">
+        <template v-if="compact">
+          Tes fichiers restent privés sur Google Drive. Les personnes avec le lien écoutent via AudioGdrive, sans accéder à ton Drive.
+        </template>
+        <template v-else>
+          Tes fichiers restent privés sur Google Drive. AudioGdrive les lit avec ton autorisation et les diffuse lui-même :
+          les personnes qui ouvrent un lien de partage n'ont ni accès à ton Drive, ni besoin d'un compte Google.
+        </template>
+      </p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ShieldCheck } from 'lucide-vue-next'
+defineProps({ compact: { type: Boolean, default: false } })
+</script>
+</file>
+
+<file path="app/components/ShareDialog.vue">
+<template>
+  <div class="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-black/65 backdrop-blur-sm" @click.self="$emit('close')">
+    <div
+      class="w-full md:max-w-lg max-h-[92dvh] overflow-y-auto rounded-t-3xl md:rounded-3xl border border-line bg-surface shadow-2xl pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="share-title"
+    >
+      <!-- En-tête -->
+      <div class="flex items-center gap-4 p-5 pb-4">
+        <CoverArt :name="folder.name" class="h-14 w-14" rounded="rounded-xl" />
+        <div class="min-w-0 flex-1">
+          <h2 id="share-title" class="text-lg font-semibold leading-tight">Partager ce dossier</h2>
+          <p class="mt-0.5 truncate text-sm text-mute">{{ folder.name }}</p>
+        </div>
+        <button @click="$emit('close')" class="h-10 w-10 -mr-2 grid place-items-center rounded-full text-mute hover:bg-white/10 hover:text-white transition-colors" aria-label="Fermer">
+          <X :size="20" />
+        </button>
+      </div>
+
+      <div class="px-5 space-y-6">
+        <p class="text-sm leading-relaxed text-white/70">
+          Le lien donne accès à ce dossier et à ses sous-dossiers. La personne n'a pas besoin de compte Google.
+        </p>
+
+        <!-- Nouveau lien -->
+        <div class="space-y-4">
+          <fieldset>
+            <legend class="mb-2 text-sm font-medium">Ce que la personne peut faire</legend>
+            <div class="grid grid-cols-2 gap-2">
+              <label
+                v-for="opt in roles"
+                :key="opt.value"
+                class="cursor-pointer rounded-xl border p-3 transition-colors"
+                :class="role === opt.value ? 'border-accent bg-accent/10' : 'border-line bg-raised hover:border-white/20'"
+              >
+                <input v-model="role" type="radio" :value="opt.value" class="sr-only" />
+                <span class="block text-sm font-medium">{{ opt.label }}</span>
+                <span class="mt-0.5 block text-xs text-mute">{{ opt.hint }}</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div>
+            <label for="share-expiry" class="mb-2 block text-sm font-medium">Durée du lien</label>
+            <div class="relative">
+              <select id="share-expiry" v-model.number="days" class="w-full appearance-none rounded-xl border border-line bg-raised px-4 py-3 pr-10 text-sm outline-none focus:border-accent">
+                <option :value="0">Illimitée, jusqu'à révocation</option>
+                <option :value="1">1 jour</option>
+                <option :value="7">7 jours</option>
+                <option :value="30">30 jours</option>
+              </select>
+              <ChevronDown :size="16" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-mute" />
+            </div>
+          </div>
+
+          <button @click="create" :disabled="busy" class="flex w-full items-center justify-center gap-2 rounded-full bg-accent py-3.5 text-sm font-semibold text-ink hover:bg-accent-strong transition-colors disabled:opacity-50">
+            <Link2 :size="17" />
+            {{ busy ? 'Création…' : 'Créer un lien de partage' }}
+          </button>
+          <p v-if="err" class="text-sm text-red-400" role="alert">{{ err }}</p>
+        </div>
+
+        <!-- Liens actifs -->
+        <div>
+          <h3 class="mb-3 text-sm font-medium">Liens actifs</h3>
+          <p v-if="!links.length" class="rounded-xl border border-dashed border-line px-4 py-5 text-center text-sm text-mute">
+            Aucun lien pour ce dossier. Crée-en un ci-dessus.
+          </p>
+          <ul v-else class="space-y-3">
+            <li v-for="l in links" :key="l.token" class="rounded-2xl border border-line bg-raised p-3.5">
+              <div class="flex items-center justify-between gap-3 text-xs text-mute">
+                <span class="font-medium text-white/80">{{ l.role === 'editor' ? 'Écoute et renommage' : 'Écoute seule' }}</span>
+                <span>{{ l.expires_at ? 'Expire le ' + new Date(l.expires_at).toLocaleDateString('fr-CH') : "N'expire pas" }}</span>
+              </div>
+              <input
+                :value="url(l.token)"
+                readonly
+                class="mt-2.5 w-full truncate rounded-lg bg-ink px-3 py-2 text-xs text-white/70 outline-none focus:ring-1 focus:ring-accent"
+                aria-label="Lien de partage"
+                @focus="$event.target.select()"
+              />
+              <div class="mt-3 flex items-center gap-2">
+                <button @click="copy(l.token)" class="flex flex-1 items-center justify-center gap-2 rounded-full bg-white py-2.5 text-sm font-semibold text-ink hover:bg-white/90 transition-colors">
+                  <Check v-if="copied === l.token" :size="16" class="text-green-600" />
+                  <Copy v-else :size="16" />
+                  {{ copied === l.token ? 'Lien copié' : 'Copier le lien' }}
+                </button>
+                <button v-if="canNativeShare" @click="nativeShare(l.token)" class="grid h-10 w-10 place-items-center rounded-full border border-line text-white hover:bg-white/10 transition-colors" aria-label="Envoyer le lien">
+                  <Share2 :size="16" />
+                </button>
+                <button @click="revoke(l.token)" class="grid h-10 w-10 place-items-center rounded-full border border-line text-mute hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400 transition-colors" aria-label="Révoquer ce lien">
+                  <Trash2 :size="16" />
+                </button>
+              </div>
+            </li>
+          </ul>
+          <p v-if="links.length" class="mt-3 text-xs text-mute">
+            Toute personne qui a le lien peut écouter jusqu'à son expiration ou sa révocation.
+          </p>
+        </div>
+
+        <PrivacyNote compact />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { X, Copy, Check, Trash2, Link2, Share2, ChevronDown } from 'lucide-vue-next'
+
+const props = defineProps({
+  libraryId: { type: String, required: true },
+  folder: { type: Object, required: true } // { drive_id, name }
+})
+defineEmits(['close'])
+
+const roles = [
+  { value: 'viewer', label: 'Écouter', hint: 'Lecture seule' },
+  { value: 'editor', label: 'Écouter et renommer', hint: 'Peut changer les noms' }
+]
+
+const links = ref([])
+const role = ref('viewer')
+const days = ref(0)
+const busy = ref(false)
+const err = ref('')
+const copied = ref('')
+const canNativeShare = ref(false)
+
+const url = (token) => `${location.origin}/s/${token}`
+const msg = (e) => e?.data?.message || e?.message || 'Erreur'
+
+const load = async () => {
+  try {
+    const r = await $fetch('/api/shares', { query: { libraryId: props.libraryId, folderId: props.folder.drive_id } })
+    links.value = r.shares
+  } catch (e) { err.value = msg(e) }
+}
+const create = async () => {
+  busy.value = true; err.value = ''
+  try {
+    await $fetch('/api/shares', {
+      method: 'POST',
+      body: { libraryId: props.libraryId, folderId: props.folder.drive_id, role: role.value, expiresInDays: days.value || null }
+    })
+    await load()
+  } catch (e) { err.value = msg(e) }
+  busy.value = false
+}
+const revoke = async (token) => {
+  await $fetch(`/api/shares/${token}`, { method: 'DELETE' }).catch(() => {})
+  await load()
+}
+const copy = async (token) => {
+  try {
+    await navigator.clipboard.writeText(url(token))
+    copied.value = token
+    setTimeout(() => { copied.value = '' }, 1800)
+  } catch {
+    // Pas de presse-papiers (page en http) : on sélectionne le lien pour le copier à la main
+    err.value = 'Copie automatique indisponible ici : touche le lien et copie-le manuellement.'
+  }
+}
+const nativeShare = async (token) => {
+  try { await navigator.share({ title: props.folder.name, url: url(token) }) } catch { /* annulé */ }
+}
+
+onMounted(() => {
+  canNativeShare.value = typeof navigator.share === 'function'
+  load()
+})
+</script>
+</file>
+
+<file path="app/components/WaveArt.vue">
+<template>
+  <div class="flex items-end justify-between gap-[1.2%]" aria-hidden="true">
+    <span
+      v-for="(b, i) in bars"
+      :key="i"
+      class="bar-rise block flex-1 rounded-full"
+      :style="{ height: b.h + '%', background: b.bright ? '#8B8CFF' : 'rgba(139,140,255,0.28)', animationDelay: i * 28 + 'ms' }"
+    ></span>
+  </div>
+</template>
+
+<script setup>
+// Forme d'onde décorative de l'écran de connexion (déterministe, pas de hasard au rendu)
+const props = defineProps({ count: { type: Number, default: 36 } })
+const bars = computed(() =>
+  Array.from({ length: props.count }, (_, i) => {
+    const wave = Math.sin(i * 0.62) * 0.5 + Math.sin(i * 0.23 + 1.3) * 0.5
+    return { h: Math.round(22 + (wave + 1) * 37), bright: i % 4 === 0 || i % 7 === 3 }
+  })
+)
+</script>
+</file>
+
+<file path="app/composables/useAudioPlayer.js">
+// Lecteur audio global (un seul <audio> pour toute l'app).
+// L'état est partagé via useState, l'élément Audio est créé côté client uniquement.
+export const useAudioPlayer = () => {
+  const currentId = useState('ap-id', () => null)
+  const playing = useState('ap-playing', () => false)
+  const time = useState('ap-time', () => 0)
+  const duration = useState('ap-duration', () => 0)
+  const error = useState('ap-error', () => '')
+  const queue = useState('ap-queue', () => []) // [{ id, src, title }]
+
+  const ensure = () => {
+    if (!import.meta.client) return null
+    if (window.__audioStream) return window.__audioStream
+    const a = new Audio()
+    a.preload = 'metadata'
+    a.addEventListener('play', () => { playing.value = true; error.value = '' })
+    a.addEventListener('pause', () => { playing.value = false })
+    a.addEventListener('timeupdate', () => { time.value = a.currentTime })
+    a.addEventListener('loadedmetadata', () => { duration.value = a.duration })
+    a.addEventListener('durationchange', () => { duration.value = a.duration })
+    a.addEventListener('error', () => {
+      playing.value = false
+      error.value = 'Lecture impossible (fichier introuvable, droits ou format non supporté).'
+    })
+    a.addEventListener('ended', () => {
+      playing.value = false
+      const i = queue.value.findIndex(t => t.id === currentId.value)
+      const next = i >= 0 ? queue.value[i + 1] : null
+      if (next) load(next, true)
+      else { time.value = 0 }
+    })
+    window.__audioStream = a
+    return a
+  }
+
+  const load = (track, autoplay = true) => {
+    const a = ensure()
+    if (!a) return
+    currentId.value = track.id
+    time.value = 0
+    duration.value = 0
+    error.value = ''
+    a.src = track.src
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({ title: track.title || '' })
+      navigator.mediaSession.setActionHandler('play', () => a.play())
+      navigator.mediaSession.setActionHandler('pause', () => a.pause())
+      navigator.mediaSession.setActionHandler('nexttrack', () => next())
+      navigator.mediaSession.setActionHandler('previoustrack', () => prev())
+    }
+    if (autoplay) a.play().catch((e) => { if (e.name !== 'AbortError') error.value = 'Lecture bloquée : ' + e.message })
+  }
+
+  // track = { id, src, title } ; list = pistes de la liste affichée (lecture enchaînée)
+  const toggle = (track, list = []) => {
+    const a = ensure()
+    if (!a) return
+    if (currentId.value === track.id) {
+      if (a.paused) a.play().catch(() => {})
+      else a.pause()
+      return
+    }
+    queue.value = list.length ? list : [track]
+    load(track, true)
+  }
+
+  const step = (dir) => {
+    const i = queue.value.findIndex(t => t.id === currentId.value)
+    const t = queue.value[i + dir]
+    if (t) load(t, true)
+  }
+  const next = () => step(1)
+  const prev = () => step(-1)
+
+  const seek = (fraction) => {
+    const a = ensure()
+    if (!a || !isFinite(a.duration)) return
+    a.currentTime = Math.min(Math.max(fraction, 0), 1) * a.duration
+  }
+
+  const stop = () => {
+    const a = ensure()
+    if (!a) return
+    a.pause()
+    a.removeAttribute('src')
+    a.load()
+    currentId.value = null
+    time.value = 0
+    duration.value = 0
+  }
+
+  const current = computed(() => queue.value.find(t => t.id === currentId.value) || null)
+  const hasNext = computed(() => {
+    const i = queue.value.findIndex(t => t.id === currentId.value)
+    return i >= 0 && i < queue.value.length - 1
+  })
+  const hasPrev = computed(() => queue.value.findIndex(t => t.id === currentId.value) > 0)
+  const progress = computed(() => (duration.value > 0 && isFinite(duration.value) ? time.value / duration.value : 0))
+
+  return { currentId, current, playing, time, duration, progress, error, hasNext, hasPrev, toggle, seek, stop, next, prev }
+}
+</file>
+
+<file path="app/pages/s/[token].vue">
+<template>
+  <div>
+    <header class="sticky top-0 z-30 border-b border-line bg-ink/85 backdrop-blur-xl pt-[env(safe-area-inset-top)]">
+      <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 md:px-8">
+        <BrandMark :size="30" />
+        <span v-if="!error && !loading" class="rounded-full bg-raised px-3.5 py-1.5 text-xs font-medium text-white/80">
+          {{ role === 'editor' ? 'Écoute et renommage' : 'Écoute seule' }}
+        </span>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-[1400px] px-4 py-6 md:px-8 md:py-10">
+      <div v-if="error" class="mx-auto max-w-md rounded-3xl border border-line bg-surface px-6 py-12 text-center">
+        <h1 class="text-xl font-semibold">Ce lien n'est plus valide</h1>
+        <p class="mt-2 text-sm leading-relaxed text-white/70">
+          {{ error }} Demande un nouveau lien à la personne qui t'a partagé ce dossier.
+        </p>
+      </div>
+
+      <p v-else-if="loading" class="py-24 text-center text-sm text-mute">Chargement du dossier partagé…</p>
+
+      <LibraryView v-else :items="items" :share-token="token" :can-edit="role === 'editor'" @changed="load" />
+    </main>
+
+    <footer class="mx-auto max-w-[1400px] px-4 pb-44 md:px-8">
+      <p class="border-t border-line pt-6 text-sm text-mute">
+        Partagé avec AudioGdrive, créé par <span class="font-semibold text-white/80">GATO</span>.
+        Les fichiers restent privés sur le Drive de la personne qui partage.
+      </p>
+    </footer>
+  </div>
+</template>
+
+<script setup>
+const route = useRoute()
+const token = route.params.token
+
+const items = ref([])
+const role = ref('viewer')
+const loading = ref(true)
+const error = ref('')
+
+const load = async () => {
+  try {
+    const r = await $fetch(`/api/shared/${token}`)
+    items.value = r.items
+    role.value = r.share.role
+  } catch (e) {
+    error.value = e?.data?.message || 'Le lien est invalide ou a expiré.'
+  }
+  loading.value = false
+}
+onMounted(load)
+</script>
+</file>
+
+<file path="app/pages/index.vue">
+<template>
+  <div>
+    <!-- ───────── DÉCONNECTÉ ───────── -->
+    <main v-if="!user" class="grid min-h-dvh md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+      <div class="flex flex-col justify-between px-6 py-8 md:px-14 md:py-12">
+        <BrandMark :size="34" />
+
+        <div class="my-12 max-w-[34rem] md:my-0">
+          <WaveArt :count="26" class="mb-10 h-20 md:hidden" />
+          <h1 class="text-[2.5rem] font-bold leading-[1.05] tracking-tight md:text-6xl">
+            Écoute et partage les audios de ton Google&nbsp;Drive.
+          </h1>
+          <p class="mt-5 max-w-[30rem] text-base leading-relaxed text-white/70 md:text-lg">
+            Choisis un dossier : tes enregistrements deviennent une bibliothèque que tu peux écouter, trier, renommer et partager par lien.
+          </p>
+
+          <button
+            @click="loginWithGoogle"
+            class="mt-8 w-full rounded-full bg-white px-8 py-4 text-[15px] font-semibold text-ink transition hover:bg-white/90 active:scale-[0.99] sm:w-auto"
+          >
+            Continuer avec Google
+          </button>
+          <p class="mt-3 text-xs leading-relaxed text-mute">
+            En te connectant, tu autorises AudioGdrive à lire et à gérer les fichiers de ton Google Drive.
+          </p>
+
+          <PrivacyNote class="mt-8" />
+        </div>
+
+        <p class="text-sm text-mute">AudioGdrive, créé par <span class="font-semibold text-white/80">GATO</span></p>
+      </div>
+
+      <div class="relative hidden items-center overflow-hidden border-l border-line bg-surface md:flex">
+        <WaveArt :count="30" class="mx-14 h-[58%] w-full" />
+      </div>
+    </main>
+
+    <!-- ───────── CONNECTÉ ───────── -->
+    <div v-else>
+      <header class="sticky top-0 z-30 border-b border-line bg-ink/85 backdrop-blur-xl pt-[env(safe-area-inset-top)]">
+        <div class="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3 md:px-8">
+          <BrandMark :size="30" />
+
+          <div class="order-last flex w-full items-center gap-2 md:order-none md:ml-6 md:w-auto md:flex-1">
+            <div v-if="libraries.length" class="relative min-w-0 flex-1 md:max-w-xs">
+              <Library :size="16" stroke-width="1.75" class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-mute" />
+              <select
+                v-model="currentLibId"
+                @change="loadItems"
+                aria-label="Bibliothèque"
+                class="w-full cursor-pointer appearance-none truncate rounded-full bg-raised py-2.5 pl-10 pr-9 text-sm font-medium text-white outline-none focus:ring-1 focus:ring-accent"
+              >
+                <option v-for="l in libraries" :key="l.id" :value="l.id">{{ l.name }}</option>
+              </select>
+              <ChevronDown :size="15" class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-mute" />
+            </div>
+            <button
+              @click="showPicker = true"
+              class="flex flex-shrink-0 items-center gap-2 rounded-full bg-raised px-4 py-2.5 text-sm font-medium text-white/90 transition-colors hover:bg-white/10"
+            >
+              <FolderPlus :size="16" stroke-width="1.75" />
+              <span class="hidden sm:inline">Ajouter un dossier</span>
+              <span class="sm:hidden">Ajouter</span>
+            </button>
+            <button
+              v-if="currentLib"
+              @click="rescan"
+              :disabled="busy"
+              class="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-raised text-white/80 transition-colors hover:bg-white/10 disabled:opacity-50"
+              aria-label="Réindexer depuis le Drive"
+              title="Réindexer depuis le Drive"
+            >
+              <RefreshCcw :size="16" stroke-width="1.75" :class="busy ? 'animate-spin' : ''" />
+            </button>
+          </div>
+
+          <!-- Compte -->
+          <div class="relative ml-auto">
+            <button
+              @click="menuOpen = !menuOpen"
+              class="grid h-10 w-10 place-items-center rounded-full bg-accent text-sm font-bold text-ink"
+              aria-label="Compte"
+              aria-haspopup="menu"
+              :aria-expanded="menuOpen"
+            >
+              {{ (user.email || '?').charAt(0).toUpperCase() }}
+            </button>
+            <div v-if="menuOpen" class="fixed inset-0 z-40" @click="menuOpen = false"></div>
+            <div v-if="menuOpen" class="absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl border border-line bg-raised shadow-2xl" role="menu">
+              <div class="border-b border-line px-4 py-3">
+                <p class="text-xs text-mute">Connecté avec</p>
+                <p class="truncate text-sm font-medium">{{ user.email }}</p>
+              </div>
+              <button v-if="currentLib" role="menuitem" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-white/10" @click="menuOpen = false; removeLibrary()">
+                <Unlink :size="16" class="text-mute" /> Retirer cette bibliothèque
+              </button>
+              <button role="menuitem" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-red-300 hover:bg-red-500/10" @click="menuOpen = false; logout()">
+                <LogOut :size="16" /> Déconnexion
+              </button>
+              <p class="border-t border-line px-4 py-3 text-xs text-mute">AudioGdrive, créé par <span class="font-semibold text-white/80">GATO</span></p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto max-w-[1400px] px-4 py-6 md:px-8 md:py-10">
+        <p v-if="errorMsg" class="mb-5 rounded-xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-300" role="alert">{{ errorMsg }}</p>
+
+        <p v-if="busy" class="mb-5 flex items-center gap-3 rounded-xl bg-accent/10 px-4 py-3 text-sm text-accent" role="status">
+          <RefreshCcw :size="15" class="animate-spin" /> Indexation de ton Drive en cours, ça peut prendre un moment.
+        </p>
+
+        <!-- Chargement -->
+        <p v-if="connected === null" class="py-24 text-center text-sm text-mute">Chargement…</p>
+
+        <!-- Drive pas (ou plus) connecté -->
+        <div v-else-if="connected === false" class="mx-auto max-w-md rounded-3xl border border-line bg-surface px-6 py-12 text-center">
+          <h2 class="text-xl font-semibold">Reconnecte ton Google Drive</h2>
+          <p class="mt-2 text-sm leading-relaxed text-white/70">L'autorisation d'accès à ton Drive a expiré ou n'a pas été accordée. Reconnecte-toi pour continuer.</p>
+          <button @click="loginWithGoogle" class="mt-6 rounded-full bg-white px-7 py-3 text-sm font-semibold text-ink hover:bg-white/90 transition-colors">
+            Reconnecter Google Drive
+          </button>
+        </div>
+
+        <!-- Aucune bibliothèque -->
+        <div v-else-if="connected && !libraries.length" class="mx-auto max-w-xl py-6 md:py-14">
+          <h2 class="text-3xl font-bold tracking-tight md:text-4xl">Choisis ton premier dossier</h2>
+          <p class="mt-3 text-base leading-relaxed text-white/70">
+            Sélectionne un dossier de ton Drive. Tous ses sous-dossiers qui contiennent de l'audio sont ajoutés à ta bibliothèque.
+          </p>
+          <button @click="showPicker = true" class="mt-7 flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-ink hover:bg-accent-strong transition-colors">
+            <FolderPlus :size="17" /> Choisir un dossier
+          </button>
+          <PrivacyNote class="mt-8" />
+        </div>
+
+        <!-- Bibliothèque -->
+        <LibraryView
+          v-else-if="currentLib"
+          :items="items"
+          :library-id="currentLib.id"
+          is-owner
+          can-edit
+          @changed="loadItems"
+        />
+      </main>
+    </div>
+
+    <!-- Sélecteur de dossier -->
+    <div v-if="showPicker" class="fixed inset-0 z-[60] flex items-end justify-center bg-black/65 backdrop-blur-sm md:items-center" @click.self="showPicker = false">
+      <div class="w-full rounded-t-3xl border border-line bg-surface p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl md:max-w-lg md:rounded-3xl" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+        <div class="mb-4 flex items-start justify-between gap-4">
+          <div>
+            <h2 id="picker-title" class="text-lg font-semibold">Choisir un dossier</h2>
+            <p class="mt-0.5 text-sm text-mute">Ses sous-dossiers avec de l'audio seront ajoutés.</p>
+          </div>
+          <button @click="showPicker = false" class="-mr-2 grid h-10 w-10 place-items-center rounded-full text-mute hover:bg-white/10 hover:text-white" aria-label="Fermer"><X :size="20" /></button>
+        </div>
+
+        <div class="mb-3 flex flex-wrap items-center gap-1 text-sm text-mute">
+          <template v-for="(c, i) in crumbs" :key="c.id">
+            <button class="rounded-md px-1.5 py-1 hover:bg-white/10 hover:text-white" :class="i === crumbs.length - 1 ? 'font-medium text-white' : ''" @click="goCrumb(i)">{{ c.name }}</button>
+            <ChevronRight v-if="i < crumbs.length - 1" :size="14" />
+          </template>
+        </div>
+
+        <div class="h-64 overflow-y-auto rounded-2xl border border-line bg-ink/40 md:h-72">
+          <p v-if="pickerLoading" class="p-4 text-sm text-mute">Chargement…</p>
+          <button
+            v-for="f in pickerFolders"
+            :key="f.id"
+            @click="enter(f)"
+            class="flex w-full items-center gap-3 border-b border-line px-4 py-3.5 text-left text-sm transition-colors last:border-0 hover:bg-white/5"
+          >
+            <Folder :size="18" stroke-width="1.5" class="flex-shrink-0 text-mute" />
+            <span class="min-w-0 flex-1 truncate">{{ f.name }}</span>
+            <ChevronRight :size="16" class="text-mute" />
+          </button>
+          <p v-if="!pickerLoading && !pickerFolders.length" class="p-4 text-sm text-mute">Aucun sous-dossier ici.</p>
+        </div>
+
+        <button
+          @click="pickCurrent"
+          :disabled="crumbs.length < 2 || busy"
+          class="mt-4 w-full truncate rounded-full bg-accent px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-strong disabled:bg-white/10 disabled:text-mute"
+        >
+          {{ busy ? 'Indexation…' : crumbs.length < 2 ? 'Ouvre un dossier pour le choisir' : `Utiliser « ${crumbs[crumbs.length - 1].name} »` }}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { RefreshCcw, LogOut, Folder, FolderPlus, Library, Unlink, X, ChevronRight, ChevronDown } from 'lucide-vue-next'
+
+const supabase = useSupabaseClient()
+const user = useSupabaseUser()
+const player = useAudioPlayer()
+
+const connected = ref(null) // null = inconnu, true/false
+const libraries = ref([])
+const currentLibId = ref('')
+const items = ref([])
+const busy = ref(false)
+const errorMsg = ref('')
+const menuOpen = ref(false)
+
+const currentLib = computed(() => libraries.value.find(l => l.id === currentLibId.value) || null)
+const errMsg = (e) => e?.data?.message || e?.message || 'Erreur'
+
+// --- Auth ---
+const loginWithGoogle = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      scopes: 'https://www.googleapis.com/auth/drive',
+      redirectTo: window.location.origin,
+      // offline + consent : obligatoire pour recevoir un refresh token Google
+      queryParams: { access_type: 'offline', prompt: 'consent' }
+    }
+  })
+  if (error) errorMsg.value = error.message
+}
+
+const logout = async () => {
+  player.stop()
+  await supabase.auth.signOut()
+  libraries.value = []; items.value = []; currentLibId.value = ''; connected.value = null
+}
+
+// Juste après le login, Supabase expose provider_refresh_token UNE fois :
+// on l'envoie au serveur qui le stocke chiffré.
+let syncing = false
+const syncConnection = async (session) => {
+  if (!session || syncing) return
+  syncing = true
+  try {
+    if (session.provider_refresh_token) {
+      await $fetch('/api/auth/connect', { method: 'POST', body: { refreshToken: session.provider_refresh_token } })
+    }
+    const c = await $fetch('/api/connection')
+    connected.value = c.connected
+    if (c.connected) await loadLibraries()
+  } catch (e) {
+    if (e?.statusCode === 409) connected.value = false
+    else errorMsg.value = errMsg(e)
+  } finally {
+    syncing = false
+  }
+}
+
+onMounted(() => {
+  supabase.auth.getSession().then(({ data }) => syncConnection(data.session))
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') syncConnection(session)
+  })
+})
+
+// --- Bibliothèques ---
+const loadLibraries = async () => {
+  const r = await $fetch('/api/libraries')
+  libraries.value = r.libraries
+  if (!currentLib.value) currentLibId.value = r.libraries[0]?.id || ''
+  if (currentLibId.value) await loadItems()
+}
+
+const loadItems = async () => {
+  if (!currentLibId.value) return
+  errorMsg.value = ''
+  try {
+    items.value = (await $fetch(`/api/libraries/${currentLibId.value}/items`)).items
+  } catch (e) {
+    if (e?.statusCode === 409) connected.value = false
+    else errorMsg.value = errMsg(e)
+  }
+}
+
+const rescan = async () => {
+  busy.value = true; errorMsg.value = ''
+  try {
+    await $fetch(`/api/libraries/${currentLibId.value}/scan`, { method: 'POST' })
+    await loadItems()
+  } catch (e) {
+    if (e?.statusCode === 409) connected.value = false
+    else errorMsg.value = errMsg(e)
+  }
+  busy.value = false
+}
+
+const removeLibrary = async () => {
+  if (!confirm(`Retirer « ${currentLib.value.name} » de l'app ? (ton Drive n'est pas modifié, les liens de partage seront supprimés)`)) return
+  player.stop()
+  await $fetch(`/api/libraries/${currentLibId.value}`, { method: 'DELETE' })
+  currentLibId.value = ''
+  items.value = []
+  await loadLibraries()
+}
+
+// --- Sélecteur de dossier ---
+const showPicker = ref(false)
+const crumbs = ref([{ id: 'root', name: 'Mon Drive' }])
+const pickerFolders = ref([])
+const pickerLoading = ref(false)
+
+const loadPicker = async () => {
+  pickerLoading.value = true
+  try {
+    const r = await $fetch('/api/drive/folders', { query: { parent: crumbs.value.at(-1).id } })
+    pickerFolders.value = r.folders
+  } catch (e) {
+    errorMsg.value = errMsg(e)
+    if (e?.statusCode === 409) { connected.value = false; showPicker.value = false }
+  }
+  pickerLoading.value = false
+}
+watch(showPicker, (v) => { if (v) { crumbs.value = [{ id: 'root', name: 'Mon Drive' }]; loadPicker() } })
+const enter = (f) => { crumbs.value.push({ id: f.id, name: f.name }); loadPicker() }
+const goCrumb = (i) => { crumbs.value = crumbs.value.slice(0, i + 1); loadPicker() }
+
+const pickCurrent = async () => {
+  busy.value = true; errorMsg.value = ''
+  try {
+    const r = await $fetch('/api/libraries', { method: 'POST', body: { folderId: crumbs.value.at(-1).id } })
+    showPicker.value = false
+    await loadLibraries()
+    currentLibId.value = r.library.id
+    await loadItems()
+  } catch (e) { errorMsg.value = errMsg(e) }
+  busy.value = false
+}
+</script>
+</file>
+
+<file path="app/utils/cover.js">
+// Pochettes générées : une couleur stable par dossier / fichier (pas d'images à charger)
+const hash = (s = '') => {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
+  return h
+}
+export const coverHue = (seed) => hash(String(seed)) % 360
+
+export const coverStyle = (seed) => {
+  const h = coverHue(seed)
+  return { background: `linear-gradient(135deg, hsl(${h} 70% 56%), hsl(${(h + 50) % 360} 75% 36%))` }
+}
+
+// Dégradé d'ambiance derrière l'en-tête d'un dossier
+export const tintStyle = (seed) => {
+  const h = coverHue(seed)
+  return {
+    background: `linear-gradient(180deg, hsl(${h} 55% 30% / .65) 0%, hsl(${h} 40% 14% / .3) 300px, transparent 560px)`
+  }
+}
+</file>
+
+<file path="app/app.vue">
+<template>
+  <div class="min-h-dvh bg-ink font-sans text-white">
+    <NuxtPage />
+    <PlayerBar />
+  </div>
+</template>
+
+<script setup>
+useHead({
+  title: 'AudioGdrive',
+  htmlAttrs: { lang: 'fr' },
+  meta: [
+    { name: 'theme-color', content: '#0E0F12' },
+    { name: 'description', content: 'AudioGdrive : écoute, range et partage les fichiers audio de ton Google Drive. Créé par GATO.' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' }
+  ],
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap' }
+  ]
+})
+</script>
+</file>
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#8B8CFF"/><g fill="#0E0F12"><rect x="6" y="11" width="3.4" height="10" rx="1.7"/><rect x="11.6" y="7" width="3.4" height="18" rx="1.7"/><rect x="17.2" y="9.5" width="3.4" height="13" rx="1.7"/><rect x="22.8" y="12.5" width="3.4" height="7" rx="1.7"/></g></svg>
+</file>
+
+<file path="public/robots.txt">
+User-Agent: *
+Disallow: /s/
+Disallow: /api/
+</file>
+
+<file path="server/api/auth/connect.post.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Le navigateur reçoit le refresh token Google UNE fois, juste après le login.
+// On le stocke chiffré côté serveur : plus jamais de "Pass expiré" après 1h.
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const { refreshToken } = await readBody<{ refreshToken?: string }>(event)
+  if (!refreshToken || typeof refreshToken !== 'string') {
+    throw createError({ statusCode: 400, message: 'refreshToken manquant' })
+  }
+
+  const db = serverSupabaseServiceRole(event)
+  const { error } = await db.from('drive_connections').upsert({
+    user_id: userId,
+    refresh_token_enc: encrypt(refreshToken),
+    updated_at: new Date().toISOString()
+  })
+  if (error) throw createError({ statusCode: 500, message: error.message })
+
+  // Vérifie que le token fonctionne vraiment (sinon il est supprimé et l'erreur remonte)
+  forgetToken(userId)
+  await getAccessToken(event, userId, true)
+  return { connected: true }
+})
+</file>
+
+<file path="server/api/drive/folders.get.ts">
+// Navigateur de dossiers pour choisir la racine d'une bibliothèque.
+// GET /api/drive/folders?parent=root  -> sous-dossiers directs du parent
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const parent = assertId((getQuery(event).parent as string) || 'root')
+
+  const params = new URLSearchParams({
+    q: `'${parent}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+    fields: 'files(id,name)',
+    orderBy: 'name',
+    pageSize: '1000',
+    supportsAllDrives: 'true',
+    includeItemsFromAllDrives: 'true'
+  })
+  const res = await driveFetch(event, userId, `/files?${params}`)
+  if (!res.ok) throw createError({ statusCode: 502, message: `Drive a répondu ${res.status}` })
+  const json: any = await res.json()
+  return { folders: json.files || [] }
+})
+</file>
+
+<file path="server/api/items/[id].delete.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Met à la corbeille Drive (récupérable 30 jours) puis retire de l'index. Propriétaire uniquement.
+export default defineEventHandler(async (event) => {
+  const id = getRouterParam(event, 'id')!
+  const { item, ownerId } = await resolveItem(event, id, 'owner')
+  const db = serverSupabaseServiceRole(event)
+
+  const { data: isRoot } = await db
+    .from('libraries').select('id').eq('owner_id', ownerId).eq('root_folder_id', item.drive_id).limit(1)
+  if (isRoot?.length) {
+    throw createError({ statusCode: 400, message: 'C\'est la racine de la bibliothèque : supprime la bibliothèque à la place.' })
+  }
+
+  const res = await driveFetch(event, ownerId, `/files/${id}?supportsAllDrives=true`, {
+    method: 'PATCH',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ trashed: true })
+  })
+  if (!res.ok) throw createError({ statusCode: 502, message: `Suppression refusée par Drive (${res.status})` })
+
+  // Retire l'élément et, si c'est un dossier, tout son contenu de l'index
+  await db
+    .from('library_items')
+    .delete()
+    .eq('owner_id', ownerId)
+    .or(`drive_id.eq.${item.drive_id},path_ids.cs.{${item.drive_id}}`)
+  return { ok: true }
+})
+</file>
+
+<file path="server/api/items/[id].patch.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Renommer (propriétaire, ou invité avec un lien "editor")
+export default defineEventHandler(async (event) => {
+  const id = getRouterParam(event, 'id')!
+  const { name } = await readBody<{ name?: string }>(event)
+  const newName = (name || '').trim()
+  if (!newName || newName.length > 255) throw createError({ statusCode: 400, message: 'Nom invalide' })
+
+  const { item, ownerId } = await resolveItem(event, id, 'edit')
+
+  const res = await driveFetch(event, ownerId, `/files/${id}?supportsAllDrives=true`, {
+    method: 'PATCH',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ name: newName })
+  })
+  if (!res.ok) throw createError({ statusCode: 502, message: `Renommage refusé par Drive (${res.status})` })
+
+  const db = serverSupabaseServiceRole(event)
+  await db.from('library_items').update({ name: newName }).eq('owner_id', ownerId).eq('drive_id', item.drive_id)
+  return { ok: true, name: newName }
+})
+</file>
+
+<file path="server/api/libraries/[id]/items.get.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const id = getRouterParam(event, 'id')!
+  const db = serverSupabaseServiceRole(event)
+  const { data, error } = await db
+    .from('library_items')
+    .select('drive_id,parent_id,name,mime_type,is_folder,created_time,size,path_ids')
+    .eq('library_id', id)
+    .eq('owner_id', userId)
+  if (error) throw createError({ statusCode: 500, message: error.message })
+  return { items: data }
+})
+</file>
+
+<file path="server/api/libraries/[id]/scan.post.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const id = getRouterParam(event, 'id')!
+  const db = serverSupabaseServiceRole(event)
+  const { data: lib } = await db.from('libraries').select('*').eq('id', id).eq('owner_id', userId).maybeSingle()
+  if (!lib) throw createError({ statusCode: 404, message: 'Bibliothèque introuvable' })
+  return await scanLibrary(event, userId, lib.id, lib.root_folder_id, lib.name)
+})
+</file>
+
+<file path="server/api/libraries/[id].delete.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Supprime la bibliothèque de l'app (index + liens de partage). Le Drive n'est pas touché.
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const id = getRouterParam(event, 'id')!
+  const db = serverSupabaseServiceRole(event)
+  await db.from('libraries').delete().eq('id', id).eq('owner_id', userId)
+  return { ok: true }
+})
+</file>
+
+<file path="server/api/shared/[token].get.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Vue invité : uniquement le dossier partagé et tout ce qu'il contient.
+export default defineEventHandler(async (event) => {
+  const share = await getShare(event, getRouterParam(event, 'token')!)
+  const db = serverSupabaseServiceRole(event)
+
+  const { data, error } = await db
+    .from('library_items')
+    .select('drive_id,parent_id,name,mime_type,is_folder,created_time,size,path_ids')
+    .eq('library_id', share.library_id)
+    .or(`drive_id.eq.${share.folder_id},path_ids.cs.{${share.folder_id}}`)
+  if (error) throw createError({ statusCode: 500, message: error.message })
+  if (!data?.length) throw createError({ statusCode: 404, message: 'Dossier partagé introuvable' })
+
+  return {
+    share: { role: share.role, folderId: share.folder_id, expiresAt: share.expires_at },
+    items: data
+  }
+})
+</file>
+
+<file path="server/api/shares/[token].delete.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const token = getRouterParam(event, 'token')!
+  const db = serverSupabaseServiceRole(event)
+  await db.from('shares').update({ revoked: true }).eq('token', token).eq('owner_id', userId)
+  return { ok: true }
+})
+</file>
+
+<file path="server/api/connection.get.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const db = serverSupabaseServiceRole(event)
+  const { data } = await db.from('drive_connections').select('user_id').eq('user_id', userId).maybeSingle()
+  return { connected: !!data }
+})
+</file>
+
+<file path="server/api/libraries.get.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const db = serverSupabaseServiceRole(event)
+  const { data, error } = await db
+    .from('libraries')
+    .select('id,name,root_folder_id,last_scan')
+    .eq('owner_id', userId)
+    .order('created_at')
+  if (error) throw createError({ statusCode: 500, message: error.message })
+  return { libraries: data }
+})
+</file>
+
+<file path="server/api/libraries.post.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Crée une bibliothèque (ou réutilise l'existante) sur un dossier Drive puis l'indexe.
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const { folderId } = await readBody<{ folderId?: string }>(event)
+  const rootId = assertId(folderId)
+
+  // Vérifie que c'est bien un dossier accessible et récupère son vrai nom
+  const res = await driveFetch(event, userId, `/files/${rootId}?fields=id,name,mimeType&supportsAllDrives=true`)
+  if (!res.ok) throw createError({ statusCode: 404, message: 'Dossier introuvable sur ton Drive' })
+  const meta: any = await res.json()
+  if (meta.mimeType !== 'application/vnd.google-apps.folder') {
+    throw createError({ statusCode: 400, message: 'Ce n\'est pas un dossier' })
+  }
+
+  const db = serverSupabaseServiceRole(event)
+  let { data: lib } = await db
+    .from('libraries').select('*').eq('owner_id', userId).eq('root_folder_id', rootId).maybeSingle()
+  if (!lib) {
+    const ins = await db
+      .from('libraries')
+      .insert({ owner_id: userId, root_folder_id: rootId, name: meta.name })
+      .select('*').single()
+    if (ins.error) throw createError({ statusCode: 500, message: ins.error.message })
+    lib = ins.data
+  }
+
+  const stats = await scanLibrary(event, userId, lib!.id, rootId, meta.name)
+  return { library: { id: lib!.id, name: meta.name, root_folder_id: rootId }, ...stats }
+})
+</file>
+
+<file path="server/api/shares.get.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const q = getQuery(event)
+  const db = serverSupabaseServiceRole(event)
+  let query = db
+    .from('shares')
+    .select('token,folder_id,role,expires_at,created_at')
+    .eq('owner_id', userId)
+    .eq('revoked', false)
+    .order('created_at', { ascending: false })
+  if (q.libraryId) query = query.eq('library_id', String(q.libraryId))
+  if (q.folderId) query = query.eq('folder_id', assertId(q.folderId))
+  const { data, error } = await query
+  if (error) throw createError({ statusCode: 500, message: error.message })
+  return { shares: data }
+})
+</file>
+
+<file path="server/api/shares.post.ts">
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Crée un lien de partage sur un sous-dossier de l'une de TES bibliothèques.
+export default defineEventHandler(async (event) => {
+  const userId = await requireUserId(event)
+  const body = await readBody<{ libraryId?: string; folderId?: string; role?: string; expiresInDays?: number | null }>(event)
+  const folderId = assertId(body.folderId)
+  const role = body.role === 'editor' ? 'editor' : 'viewer'
+
+  const db = serverSupabaseServiceRole(event)
+  const { data: item } = await db
+    .from('library_items')
+    .select('library_id,is_folder')
+    .eq('owner_id', userId)
+    .eq('library_id', String(body.libraryId || ''))
+    .eq('drive_id', folderId)
+    .maybeSingle()
+  if (!item || !item.is_folder) throw createError({ statusCode: 404, message: 'Dossier introuvable dans cette bibliothèque' })
+
+  const days = Number(body.expiresInDays)
+  const expires_at = days > 0 ? new Date(Date.now() + days * 86_400_000).toISOString() : null
+
+  const { data, error } = await db
+    .from('shares')
+    .insert({ library_id: item.library_id, owner_id: userId, folder_id: folderId, role, expires_at })
+    .select('token,folder_id,role,expires_at,created_at')
+    .single()
+  if (error) throw createError({ statusCode: 500, message: error.message })
+  return { share: data }
+})
+</file>
+
+<file path="server/api/stream.get.ts">
+// Proxy audio Drive -> navigateur.
+// Le token Google ne quitte JAMAIS le serveur. Le <audio> appelle simplement
+//   /api/stream?id=<driveId>            (propriétaire, cookie de session)
+//   /api/stream?id=<driveId>&share=<t>  (invité, lien de partage)
+// Les requêtes Range sont relayées : indispensable pour le seek et pour Safari.
+export default defineEventHandler(async (event) => {
+  const id = String(getQuery(event).id || '')
+  const { item, ownerId } = await resolveItem(event, id, 'view')
+  if (item.is_folder) throw createError({ statusCode: 400, message: 'Ce n\'est pas un fichier' })
+
+  const headers: Record<string, string> = {}
+  const range = getHeader(event, 'range')
+  if (range) headers.Range = range
+
+  // Coupe le flux Drive si l'auditeur ferme l'onglet / change de morceau
+  const abort = new AbortController()
+  event.node.req.on('close', () => abort.abort())
+
+  const upstream = await driveFetch(event, ownerId, `/files/${id}?alt=media&supportsAllDrives=true`, {
+    headers,
+    signal: abort.signal
+  })
+
+  if (![200, 206, 416].includes(upstream.status)) {
+    throw createError({
+      statusCode: upstream.status === 404 ? 404 : 502,
+      message: `Lecture Drive impossible (${upstream.status})`
+    })
+  }
+
+  setResponseStatus(event, upstream.status)
+
+  let type = upstream.headers.get('content-type') || ''
+  if (!type || type.startsWith('application/octet-stream')) type = item.mime_type || 'audio/mpeg'
+  setHeader(event, 'content-type', type)
+  for (const h of ['content-length', 'content-range']) {
+    const v = upstream.headers.get(h)
+    if (v) setHeader(event, h, v)
+  }
+  setHeader(event, 'accept-ranges', 'bytes')
+  setHeader(event, 'cache-control', 'private, max-age=3600')
+
+  return upstream.body
+})
+</file>
+
+<file path="server/utils/access.ts">
+import type { H3Event } from 'h3'
+import { serverSupabaseUser, serverSupabaseServiceRole } from '#supabase/server'
+
+export async function requireUserId(event: H3Event): Promise<string> {
+  const user: any = await serverSupabaseUser(event).catch(() => null)
+  const id = user?.id ?? user?.sub
+  if (!id) throw createError({ statusCode: 401, message: 'Non connecté' })
+  return id as string
+}
+
+export async function getShare(event: H3Event, token: string) {
+  const db = serverSupabaseServiceRole(event)
+  const { data } = await db.from('shares').select('*').eq('token', token).eq('revoked', false).maybeSingle()
+  if (!data || (data.expires_at && new Date(data.expires_at) < new Date())) {
+    throw createError({ statusCode: 404, message: 'Lien de partage invalide ou expiré' })
+  }
+  return data
+}
+
+export type Need = 'view' | 'edit' | 'owner'
+
+// Point d'entrée unique des droits sur un fichier/dossier de l'index.
+//  - avec ?share=TOKEN : droits de l'invité (viewer = voir/écouter, editor = + renommer)
+//  - sinon : session Supabase du propriétaire
+// Un invité ne voit un élément que s'il est DANS le dossier partagé (ou est ce dossier).
+export async function resolveItem(event: H3Event, driveId: string, need: Need) {
+  assertId(driveId)
+  const db = serverSupabaseServiceRole(event)
+  const shareToken = getQuery(event).share as string | undefined
+
+  if (shareToken) {
+    if (need === 'owner') throw createError({ statusCode: 403, message: 'Réservé au propriétaire' })
+    const share = await getShare(event, shareToken)
+    if (need === 'edit' && share.role !== 'editor') {
+      throw createError({ statusCode: 403, message: 'Ce lien est en lecture seule' })
+    }
+    const { data } = await db
+      .from('library_items')
+      .select('*')
+      .eq('library_id', share.library_id)
+      .eq('drive_id', driveId)
+      .limit(1)
+    const item = data?.[0]
+    if (!item || !(item.drive_id === share.folder_id || item.path_ids.includes(share.folder_id))) {
+      throw createError({ statusCode: 404, message: 'Introuvable' })
+    }
+    return { item, ownerId: share.owner_id as string, isOwner: false }
+  }
+
+  const userId = await requireUserId(event)
+  const { data } = await db
+    .from('library_items')
+    .select('*')
+    .eq('owner_id', userId)
+    .eq('drive_id', driveId)
+    .limit(1)
+  const item = data?.[0]
+  if (!item) throw createError({ statusCode: 404, message: 'Introuvable' })
+  return { item, ownerId: userId, isOwner: true }
+}
+</file>
+
+<file path="server/utils/crypto.ts">
+import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto'
+
+// AES-256-GCM. Format stocké : base64( iv(12) | tag(16) | données )
+function getKey(): Buffer {
+  const raw = useRuntimeConfig().encryptionKey
+  const key = Buffer.from(raw || '', 'base64')
+  if (key.length !== 32) {
+    throw createError({
+      statusCode: 500,
+      message: 'NUXT_ENCRYPTION_KEY invalide : génère-la avec `openssl rand -base64 32`'
+    })
+  }
+  return key
+}
+
+export function encrypt(text: string): string {
+  const iv = randomBytes(12)
+  const cipher = createCipheriv('aes-256-gcm', getKey(), iv)
+  const enc = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()])
+  return Buffer.concat([iv, cipher.getAuthTag(), enc]).toString('base64')
+}
+
+export function decrypt(payload: string): string {
+  const buf = Buffer.from(payload, 'base64')
+  const decipher = createDecipheriv('aes-256-gcm', getKey(), buf.subarray(0, 12))
+  decipher.setAuthTag(buf.subarray(12, 28))
+  return Buffer.concat([decipher.update(buf.subarray(28)), decipher.final()]).toString('utf8')
+}
+</file>
+
+<file path="server/utils/google.ts">
+import type { H3Event } from 'h3'
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+// Cache mémoire des access tokens Google (1 par propriétaire, ~1h de validité)
+const tokenCache = new Map<string, { token: string; exp: number }>()
+
+export function forgetToken(ownerId: string) {
+  tokenCache.delete(ownerId)
+}
+
+// Les ids Drive sont injectés dans des requêtes `q=` : on les valide strictement.
+export function assertId(id: unknown): string {
+  if (typeof id !== 'string' || !/^[A-Za-z0-9_-]{4,100}$/.test(id)) {
+    throw createError({ statusCode: 400, message: 'ID Drive invalide' })
+  }
+  return id
+}
+
+function notConnected() {
+  return createError({
+    statusCode: 409,
+    statusMessage: 'drive_not_connected',
+    message: 'Google Drive non connecté : reconnecte-toi avec Google.'
+  })
+}
+
+export async function getAccessToken(event: H3Event, ownerId: string, force = false): Promise<string> {
+  const hit = tokenCache.get(ownerId)
+  if (!force && hit && hit.exp > Date.now() + 60_000) return hit.token
+
+  const db = serverSupabaseServiceRole(event)
+  const { data } = await db
+    .from('drive_connections')
+    .select('refresh_token_enc')
+    .eq('user_id', ownerId)
+    .maybeSingle()
+  if (!data) throw notConnected()
+
+  const cfg = useRuntimeConfig()
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: cfg.googleClientId,
+      client_secret: cfg.googleClientSecret,
+      refresh_token: decrypt(data.refresh_token_enc),
+      grant_type: 'refresh_token'
+    })
+  })
+  const json: any = await res.json().catch(() => ({}))
+
+  if (!res.ok) {
+    tokenCache.delete(ownerId)
+    if (json.error === 'invalid_grant') {
+      // Token révoqué / expiré : on l'oublie, l'utilisateur doit se reconnecter
+      await db.from('drive_connections').delete().eq('user_id', ownerId)
+      throw notConnected()
+    }
+    throw createError({ statusCode: 502, message: `Google OAuth : ${json.error || res.status}` })
+  }
+
+  tokenCache.set(ownerId, { token: json.access_token, exp: Date.now() + (json.expires_in ?? 3600) * 1000 })
+  return json.access_token
+}
+
+// fetch vers l'API Drive v3 avec le token du propriétaire (retry 1x si 401)
+export async function driveFetch(
+  event: H3Event,
+  ownerId: string,
+  path: string,
+  init: RequestInit = {}
+): Promise<Response> {
+  const url = path.startsWith('http') ? path : `https://www.googleapis.com/drive/v3${path}`
+  const run = async (force: boolean) =>
+    fetch(url, {
+      ...init,
+      headers: { ...(init.headers as Record<string, string>), Authorization: `Bearer ${await getAccessToken(event, ownerId, force)}` }
+    })
+  let res = await run(false)
+  if (res.status === 401) res = await run(true)
+  return res
+}
+</file>
+
+<file path="server/utils/scan.ts">
+import type { H3Event } from 'h3'
+import { serverSupabaseServiceRole } from '#supabase/server'
+
+const FOLDER = 'application/vnd.google-apps.folder'
+
+async function listChildren(event: H3Event, ownerId: string, folderId: string) {
+  const out: any[] = []
+  let pageToken: string | undefined
+  do {
+    const params = new URLSearchParams({
+      q: `'${folderId}' in parents and trashed = false and (mimeType = '${FOLDER}' or mimeType contains 'audio/')`,
+      fields: 'nextPageToken,files(id,name,mimeType,createdTime,size)',
+      pageSize: '1000',
+      supportsAllDrives: 'true',
+      includeItemsFromAllDrives: 'true'
+    })
+    if (pageToken) params.set('pageToken', pageToken)
+    const res = await driveFetch(event, ownerId, `/files?${params}`)
+    if (!res.ok) throw createError({ statusCode: 502, message: `Drive a répondu ${res.status}` })
+    const json: any = await res.json()
+    out.push(...(json.files || []))
+    pageToken = json.nextPageToken
+  } while (pageToken)
+  return out
+}
+
+// Parcourt le dossier racine, garde uniquement les sous-dossiers qui contiennent
+// de l'audio (directement ou plus bas) + les fichiers audio, et réécrit l'index.
+export async function scanLibrary(event: H3Event, ownerId: string, libraryId: string, rootId: string, rootName: string) {
+  const folders = new Map<string, { name: string; parent: string | null; path: string[]; created?: string }>()
+  folders.set(rootId, { name: rootName, parent: null, path: [] })
+  const files: any[] = []
+  const queue = [rootId]
+
+  while (queue.length) {
+    const batch = queue.splice(0, 5) // 5 dossiers en parallèle
+    const results = await Promise.all(
+      batch.map(async (id) => ({ id, children: await listChildren(event, ownerId, id) }))
+    )
+    for (const { id, children } of results) {
+      const parent = folders.get(id)!
+      const path = [...parent.path, id]
+      for (const c of children) {
+        if (c.mimeType === FOLDER) {
+          if (!folders.has(c.id)) {
+            folders.set(c.id, { name: c.name, parent: id, path, created: c.createdTime })
+            queue.push(c.id)
+          }
+        } else {
+          files.push({ ...c, parent: id, path })
+        }
+      }
+    }
+  }
+
+  const withAudio = new Set<string>([rootId])
+  for (const f of files) for (const p of f.path) withAudio.add(p)
+
+  const rows: any[] = []
+  for (const [id, f] of folders) {
+    if (!withAudio.has(id)) continue
+    rows.push({
+      library_id: libraryId, owner_id: ownerId, drive_id: id, parent_id: f.parent,
+      name: f.name, mime_type: FOLDER, is_folder: true, created_time: f.created ?? null,
+      size: null, path_ids: f.path
+    })
+  }
+  for (const f of files) {
+    rows.push({
+      library_id: libraryId, owner_id: ownerId, drive_id: f.id, parent_id: f.parent,
+      name: f.name, mime_type: f.mimeType, is_folder: false, created_time: f.createdTime ?? null,
+      size: f.size ? Number(f.size) : null, path_ids: f.path
+    })
+  }
+
+  const db = serverSupabaseServiceRole(event)
+  await db.from('library_items').delete().eq('library_id', libraryId)
+  for (let i = 0; i < rows.length; i += 500) {
+    const { error } = await db.from('library_items').insert(rows.slice(i, i + 500))
+    if (error) throw createError({ statusCode: 500, message: error.message })
+  }
+  await db.from('libraries').update({ last_scan: new Date().toISOString(), name: rootName }).eq('id', libraryId)
+
+  return { folders: rows.filter((r) => r.is_folder).length, files: files.length }
+}
+</file>
+
+<file path="supabase/schema.sql">
+-- AudioStream : schéma Supabase
+-- À coller tel quel dans Supabase > SQL Editor > Run.
+-- Toutes les tables ont RLS activé SANS policy : seul le serveur Nuxt
+-- (clé service_role) peut y accéder. Le navigateur n'y touche jamais directement.
+
+-- 1) Connexion Google Drive du propriétaire (refresh token chiffré côté serveur)
+create table if not exists public.drive_connections (
+  user_id           uuid primary key references auth.users(id) on delete cascade,
+  refresh_token_enc text not null,
+  updated_at        timestamptz not null default now()
+);
+
+-- 2) Bibliothèques : un dossier racine du Drive choisi par le propriétaire
+create table if not exists public.libraries (
+  id             uuid primary key default gen_random_uuid(),
+  owner_id       uuid not null references auth.users(id) on delete cascade,
+  root_folder_id text not null,
+  name           text not null,
+  last_scan      timestamptz,
+  created_at     timestamptz not null default now(),
+  unique (owner_id, root_folder_id)
+);
+
+-- 3) Index de la bibliothèque : sous-dossiers contenant de l'audio + fichiers audio
+--    (c'est la "mini base de données" sélectionnée dans le Drive)
+create table if not exists public.library_items (
+  id           bigint generated always as identity primary key,
+  library_id   uuid not null references public.libraries(id) on delete cascade,
+  owner_id     uuid not null references auth.users(id) on delete cascade,
+  drive_id     text not null,
+  parent_id    text,
+  name         text not null,
+  mime_type    text,
+  is_folder    boolean not null default false,
+  created_time timestamptz,
+  size         bigint,
+  path_ids     text[] not null default '{}',  -- ids des dossiers ancêtres (racine -> parent)
+  unique (library_id, drive_id)
+);
+create index if not exists library_items_library_idx on public.library_items (library_id);
+create index if not exists library_items_owner_drive_idx on public.library_items (owner_id, drive_id);
+create index if not exists library_items_path_idx on public.library_items using gin (path_ids);
+
+-- 4) Liens de partage d'un sous-dossier (et de tout ce qu'il contient)
+create table if not exists public.shares (
+  token      text primary key
+             default replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''),
+  library_id uuid not null references public.libraries(id) on delete cascade,
+  owner_id   uuid not null references auth.users(id) on delete cascade,
+  folder_id  text not null,
+  role       text not null default 'viewer' check (role in ('viewer', 'editor')),
+  expires_at timestamptz,
+  revoked    boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create index if not exists shares_library_idx on public.shares (library_id, folder_id);
+
+alter table public.drive_connections enable row level security;
+alter table public.libraries         enable row level security;
+alter table public.library_items     enable row level security;
+alter table public.shares            enable row level security;
+</file>
+
+<file path=".env.example">
+# Supabase > Project Settings > API
+SUPABASE_URL=https://xxxxxxxx.supabase.co
+SUPABASE_KEY=eyJ...            # clé "anon" / publishable
+SUPABASE_SERVICE_KEY=eyJ...    # clé "service_role" (SECRÈTE, serveur uniquement)
+
+# Google Cloud > APIs & Services > Credentials > OAuth client (type "Web")
+# (les mêmes que ceux collés dans Supabase > Authentication > Providers > Google)
+NUXT_GOOGLE_CLIENT_ID=xxxx.apps.googleusercontent.com
+NUXT_GOOGLE_CLIENT_SECRET=GOCSPX-xxxx
+
+# Clé de chiffrement des refresh tokens (32 octets en base64)
+# Génère-la avec :  openssl rand -base64 32
+NUXT_ENCRYPTION_KEY=
+</file>
+
+<file path=".gitignore">
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+</file>
+
+<file path="nuxt.config.ts">
+// nuxt.config.ts
+export default defineNuxtConfig({
+  compatibilityDate: '2025-07-15',
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/supabase'],
+  css: ['~/assets/css/main.css'],
+  supabase: {
+    redirect: false
+  },
+  // Valeurs privées (serveur uniquement), remplies par les variables NUXT_* du .env
+  runtimeConfig: {
+    googleClientId: '',
+    googleClientSecret: '',
+    encryptionKey: ''
+  }
+})
+</file>
+
+<file path="package.json">
+{
+  "name": "audio-drive",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxtjs/supabase": "^2.0.10",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "lucide-vue-next": "^1.0.0",
+    "nuxt": "^4.6.0",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1"
+  }
+}
+</file>
+
+<file path="SETUP.md">
+# AudioStream : guide d'installation
+
+## Ce qui change par rapport à la démo
+
+| Avant | Maintenant |
+|---|---|
+| `<audio src="drive.google.com/uc?...">` (page de login HTML, jamais de l'audio) | `<audio src="/api/stream?id=...">` : le serveur lit Drive avec le token et relaie le flux |
+| Pas de support `Range` (pas de seek, Safari refuse) | `Range` / `206 Partial Content` relayés |
+| Token Google dans l'URL ou dans le navigateur, expire après 1h | Refresh token **chiffré en base**, access token renouvelé automatiquement côté serveur |
+| Liste des dossiers = tout le Drive | Une **bibliothèque** = un dossier racine ; seuls les sous-dossiers contenant de l'audio sont indexés |
+| Partage = bouton vide | Liens de partage par sous-dossier (écoute seule ou écoute + renommer, expiration, révocation) |
+
+## 1. Google Cloud (une fois)
+
+1. https://console.cloud.google.com → crée un projet.
+2. **APIs & Services → Library** → active **Google Drive API**.
+3. **OAuth consent screen** : type *External*, ajoute ton email dans *Test users*, ajoute le scope `.../auth/drive`.
+4. **Credentials → Create credentials → OAuth client ID** → type *Web application*.
+   - *Authorized redirect URI* : `https://<TON-PROJET>.supabase.co/auth/v1/callback`
+5. Note le **Client ID** et le **Client secret**.
+
+> ⚠️ Tant que l'écran de consentement est en mode **Testing**, Google révoque les refresh tokens après **7 jours** : il faudra recliquer sur « Reconnecter Google Drive ». Pour que ça tienne, passe l'app en **In production** (pour un usage perso, tu verras juste un avertissement « app non vérifiée » à valider une fois).
+
+## 2. Supabase
+
+1. **SQL Editor** → colle le contenu de `supabase/schema.sql` → Run.
+2. **Authentication → Providers → Google** : active, colle le Client ID et le Client secret.
+3. **Authentication → URL Configuration** :
+   - Site URL : `http://localhost:3000`
+   - Redirect URLs : `http://localhost:3000/**` (ajoute plus tard ton domaine de prod)
+4. **Project Settings → API** : récupère `URL`, la clé `anon` et la clé `service_role`.
+
+## 3. Variables d'environnement
+
+```bash
+cp .env.example .env
+openssl rand -base64 32     # → colle le résultat dans NUXT_ENCRYPTION_KEY
+```
+
+Remplis ensuite `.env` (toutes les clés sont expliquées dans `.env.example`).
+La clé `SUPABASE_SERVICE_KEY` ne doit **jamais** être publique ni commitée.
+
+## 4. Lancer
+
+```bash
+npm install
+npm run dev
+```
+
+Ouvre http://localhost:3000 → *Connexion Google* → accepte l'accès au Drive → *Choisir un dossier* → l'indexation démarre.
+
+## 5. Utilisation
+
+- **Bibliothèque** : le dossier racine que tu choisis. Le bouton ↻ réindexe si tu as ajouté des fichiers directement dans Drive.
+- **Partager** : survole un dossier dans la colonne de gauche → icône partage → crée un lien. L'invité ouvre `/s/<token>` sans compte et ne voit que ce dossier et ses sous-dossiers.
+- **Supprimer** : met le fichier à la **corbeille Drive** (récupérable), pas de suppression définitive.
+- **Retirer une bibliothèque** : supprime l'index et les liens de partage, ton Drive n'est pas touché.
+
+## Sécurité en bref
+
+- Le token Google ne sort jamais du serveur.
+- Les tables Supabase n'ont aucune policy RLS : seul le serveur (service_role) y accède.
+- Un invité ne peut lire/renommer que des fichiers dont le chemin passe par le dossier partagé (contrôle serveur à chaque requête de stream).
+- Les liens non expirants restent valides jusqu'à révocation : mets une expiration pour les partages sensibles.
+
+## Limites connues / pistes
+
+- L'indexation est manuelle (bouton ↻). Une indexation planifiée ou via les webhooks Drive est possible plus tard.
+- Pour un Drive de plusieurs dizaines de milliers de fichiers, l'indexation tourne dans une requête HTTP : prévoir une tâche en arrière-plan.
+- Le streaming passe par ton serveur : la bande passante de l'hébergeur est consommée à chaque écoute.
+</file>
+
+<file path="tailwind.config.ts">
+import type { Config } from 'tailwindcss'
+
+export default <Partial<Config>>{
+  theme: {
+    extend: {
+      colors: {
+        ink: '#0E0F12',
+        surface: '#16181D',
+        raised: '#1E2128',
+        mute: '#8A8F9A',
+        accent: { DEFAULT: '#8B8CFF', strong: '#7677F2' }
+      },
+      borderColor: {
+        line: 'rgba(255,255,255,0.08)'
+      },
+      fontFamily: {
+        sans: ['"Schibsted Grotesk"', 'ui-sans-serif', 'system-ui', '-apple-system', '"Segoe UI"', 'sans-serif']
+      }
+    }
+  }
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "files": [],
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
+}
+</file>
+
+</files>
